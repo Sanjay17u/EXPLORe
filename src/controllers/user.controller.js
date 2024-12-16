@@ -13,7 +13,7 @@ import {ApiResponse} from "../utils/ApiResponse.js"
     throw new ApiError(400, "All Fields are Required.")
    }
 
-   const existedUser = User.findOne({
+   const existedUser = await User.findOne({
     $or: [{ username }, { email }]
    })
 
@@ -48,7 +48,7 @@ import {ApiResponse} from "../utils/ApiResponse.js"
     username: username.toLowerCase()
    })
 
-   const createdUser = User.findById(user._id).select(
+   const createdUser = await User.findById(user._id).select(
     "-password -refreshToken"
    ) 
 
