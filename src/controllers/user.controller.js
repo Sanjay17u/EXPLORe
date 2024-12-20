@@ -3,6 +3,7 @@ import {ApiError} from "../utils/ApiError.js"
 import {User} from "../models/user.model.js"
 import {uploadOncloudinary} from "../utils/cloudinary.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
+import jwt from "jsonwebtoken"
 
 const generateAccessAndrefreshTokens = async(userId) => {
   try {
@@ -80,7 +81,7 @@ const registerUser = asyncHandler( async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
   const {username, email, password} = req.body
-  if(!username || email) {
+  if(!(username || email)) {
     throw new ApiError(400, "Username and Email is Required") 
   }
 
@@ -89,6 +90,7 @@ const loginUser = asyncHandler(async (req, res) => {
   })
 
   if(!user) {
+    console.log("No user found with username or email:", { username, email });
     throw new ApiError(404, 'User Doest Exists')
   }
 
